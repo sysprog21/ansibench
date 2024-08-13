@@ -1,7 +1,6 @@
 # DEFAULT BENCHMARK CONFIGURATION
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cc          = gcc
-n           = 20000
 threads     = 1 
 multithread = USE_FORK
 # multithread = USE_PTHREAD -pthread
@@ -18,13 +17,13 @@ memory      = "\"Main memory (heap)\""
 -include ../mk/$(cc)/xflags/$(xflags).mk
 -include ../mk/$(cc)/coremark/stdflags.mk
 # ----------------------------------------------------------------------------
-BINDIR = ./bin
-OUT    = $(BINDIR)/coremark
-INPUT  = ./src/core_main.c ./src/core_matrix.c ./src/core_list_join.c
-INPUT += ./src/core_state.c ./src/core_util.c ./src/core_portme.c
+BINDIR ?= ./bin
+OUT     = $(BINDIR)/coremark
+INPUT   = ./src/core_main.c ./src/core_matrix.c ./src/core_list_join.c
+INPUT  += ./src/core_state.c ./src/core_util.c ./src/core_portme.c
 # ----------------------------------------------------------------------------
 CARGS  += -DCOMPILER_FLAGS="\"$(OPTLEVEL)\"" -DMEM_LOCATION=$(memory)
-CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT)
+CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT) $(LDFLAGS)
 # ----------------------------------------------------------------------------
 all: bin 
 run: all
@@ -34,7 +33,7 @@ run: all
 dirs:
 	@mkdir -p $(BINDIR)
 bin: dirs
-	$(CC) $(CARGS) 
+	@$(CC) $(CARGS)
 clean:
 	@-rm -f $(OUT) core a.out *.o
 	@-rm -f $(BINDIR)/*

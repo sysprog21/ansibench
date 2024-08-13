@@ -10,12 +10,12 @@ cc          = gcc
 -include ../mk/$(cc)/xflags/$(xflags).mk
 -include ../mk/$(cc)/nbench/stdflags.mk
 # ----------------------------------------------------------------------------
-BINDIR = ./bin
-OUT    = $(BINDIR)/nbench
-INPUT  = ./src/nbench0.c ./src/nbench1.c
-INPUT += ./src/hardware.c ./src/emfloat.c ./src/sysspec.c ./src/misc.c
+BINDIR ?= ./bin
+OUT     = $(BINDIR)/nbench
+INPUT   = ./src/nbench0.c ./src/nbench1.c
+INPUT  += ./src/hardware.c ./src/emfloat.c ./src/sysspec.c ./src/misc.c
 # ----------------------------------------------------------------------------
-CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT)
+CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT) $(LDFLAGS)
 # ----------------------------------------------------------------------------
 all: bin 
 run: all
@@ -25,7 +25,7 @@ run: all
 dirs:
 	@mkdir -p $(BINDIR)
 bin: dirs
-	$(CC) $(CARGS) 
+	@$(CC) $(CARGS)
 clean:
 	@-rm -f $(OUT) core a.out *.o
 	@-rm -f $(BINDIR)/*

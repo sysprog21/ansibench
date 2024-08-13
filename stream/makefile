@@ -2,8 +2,6 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cc = gcc
 n  = 10000000
-mp = -fopenmp 
- 
 ##############################################################################
 # DO NOT MODIFY BEYOND THIS POINT                                            #
 ##############################################################################
@@ -12,11 +10,11 @@ mp = -fopenmp
 -include ../mk/$(cc)/xflags/$(xflags).mk
 -include ../mk/$(cc)/stream/stdflags.mk
 # ----------------------------------------------------------------------------
-BINDIR = ./bin
-OUT    = $(BINDIR)/stream
-INPUT  = ./src/stream.c
+BINDIR ?= ./bin
+OUT     = $(BINDIR)/stream
+INPUT   = ./src/stream.c
 # ----------------------------------------------------------------------------
-CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT)
+CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT) $(LDFLAGS)
 # ----------------------------------------------------------------------------
 all: bin 
 run: all
@@ -26,7 +24,7 @@ run: all
 dirs:
 	@mkdir -p $(BINDIR)
 bin: dirs
-	$(CC) $(CARGS) 
+	@$(CC) $(CARGS)
 clean:
 	@-rm -f $(OUT) core a.out *.o
 	@-rm -f $(BINDIR)/*
