@@ -27,13 +27,13 @@ Original Author: Shay Gal-on
 #define TOTAL_DATA_SIZE 2 * 1000
 #endif
 
-#define SEED_ARG      0
-#define SEED_FUNC     1
+#define SEED_ARG 0
+#define SEED_FUNC 1
 #define SEED_VOLATILE 2
 
 #define MEM_STATIC 0
 #define MEM_MALLOC 1
-#define MEM_STACK  2
+#define MEM_STACK 2
 
 #include "core_portme.h"
 
@@ -61,41 +61,39 @@ typedef ee_u32 secs_ret;
 #define MAIN_RETURN_VAL
 #define MAIN_RETURN_TYPE void
 #else
-#define MAIN_RETURN_VAL  0
+#define MAIN_RETURN_VAL 0
 #define MAIN_RETURN_TYPE int
 #endif
 
-void       start_time(void);
-void       stop_time(void);
+void start_time(void);
+void stop_time(void);
 CORE_TICKS get_time(void);
-secs_ret   time_in_secs(CORE_TICKS ticks);
+secs_ret time_in_secs(CORE_TICKS ticks);
 
 /* Misc useful functions */
 ee_u16 crcu8(ee_u8 data, ee_u16 crc);
 ee_u16 crc16(ee_s16 newval, ee_u16 crc);
 ee_u16 crcu16(ee_u16 newval, ee_u16 crc);
 ee_u16 crcu32(ee_u32 newval, ee_u16 crc);
-ee_u8  check_data_types(void);
-void * portable_malloc(ee_size_t size);
-void   portable_free(void *p);
+ee_u8 check_data_types(void);
+void *portable_malloc(ee_size_t size);
+void portable_free(void *p);
 ee_s32 parseval(char *valstring);
 
 /* Algorithm IDS */
-#define ID_LIST             (1 << 0)
-#define ID_MATRIX           (1 << 1)
-#define ID_STATE            (1 << 2)
+#define ID_LIST (1 << 0)
+#define ID_MATRIX (1 << 1)
+#define ID_STATE (1 << 2)
 #define ALL_ALGORITHMS_MASK (ID_LIST | ID_MATRIX | ID_STATE)
-#define NUM_ALGORITHMS      3
+#define NUM_ALGORITHMS 3
 
 /* list data structures */
-typedef struct list_data_s
-{
+typedef struct list_data_s {
     ee_s16 data16;
     ee_s16 idx;
 } list_data;
 
-typedef struct list_head_s
-{
+typedef struct list_head_s {
     struct list_head_s *next;
     struct list_data_s *info;
 } list_head;
@@ -110,9 +108,8 @@ typedef ee_f16 MATDAT;
 typedef ee_f32 MATRES;
 #endif
 
-typedef struct MAT_PARAMS_S
-{
-    int     N;
+typedef struct MAT_PARAMS_S {
+    int N;
     MATDAT *A;
     MATDAT *B;
     MATRES *C;
@@ -120,8 +117,7 @@ typedef struct MAT_PARAMS_S
 
 /* state machine related stuff */
 /* List of all the possible states for the FSM */
-typedef enum CORE_STATE
-{
+typedef enum CORE_STATE {
     CORE_START = 0,
     CORE_INVALID,
     CORE_S1,
@@ -134,18 +130,17 @@ typedef enum CORE_STATE
 } core_state_e;
 
 /* Helper structure to hold results */
-typedef struct RESULTS_S
-{
+typedef struct RESULTS_S {
     /* inputs */
-    ee_s16              seed1;       /* Initializing seed */
-    ee_s16              seed2;       /* Initializing seed */
-    ee_s16              seed3;       /* Initializing seed */
-    void *              memblock[4]; /* Pointer to safe memory location */
-    ee_u32              size;        /* Size of the data */
-    ee_u32              iterations;  /* Number of iterations to execute */
-    ee_u32              execs;       /* Bitmask of operations to execute */
+    ee_s16 seed1;      /* Initializing seed */
+    ee_s16 seed2;      /* Initializing seed */
+    ee_s16 seed3;      /* Initializing seed */
+    void *memblock[4]; /* Pointer to safe memory location */
+    ee_u32 size;       /* Size of the data */
+    ee_u32 iterations; /* Number of iterations to execute */
+    ee_u32 execs;      /* Bitmask of operations to execute */
     struct list_head_s *list;
-    mat_params          mat;
+    mat_params mat;
     /* outputs */
     ee_u16 crc;
     ee_u16 crclist;
@@ -164,10 +159,10 @@ ee_u8 core_stop_parallel(core_results *res);
 
 /* list benchmark functions */
 list_head *core_list_init(ee_u32 blksize, list_head *memblock, ee_s16 seed);
-ee_u16     core_bench_list(core_results *res, ee_s16 finder_idx);
+ee_u16 core_bench_list(core_results *res, ee_s16 finder_idx);
 
 /* state benchmark functions */
-void   core_init_state(ee_u32 size, ee_s16 seed, ee_u8 *p);
+void core_init_state(ee_u32 size, ee_s16 seed, ee_u8 *p);
 ee_u16 core_bench_state(ee_u32 blksize,
                         ee_u8 *memblock,
                         ee_s16 seed1,
@@ -176,16 +171,16 @@ ee_u16 core_bench_state(ee_u32 blksize,
                         ee_u16 crc);
 
 /* matrix benchmark functions */
-ee_u32 core_init_matrix(ee_u32      blksize,
-                        void *      memblk,
-                        ee_s32      seed,
+ee_u32 core_init_matrix(ee_u32 blksize,
+                        void *memblk,
+                        ee_s32 seed,
                         mat_params *p);
 ee_u16 core_bench_matrix(mat_params *p, ee_s16 seed, ee_u16 crc);
 
 /* seed argument handling (moved from core_main.c to resolve warnings) */
-#if (SEED_METHOD == SEED_ARG) 
+#if (SEED_METHOD == SEED_ARG)
 ee_s32 get_seed_args(int i, int argc, char *argv[]);
-#define get_seed(x)    (ee_s16) get_seed_args(x, argc, argv) 
+#define get_seed(x) (ee_s16) get_seed_args(x, argc, argv)
 #define get_seed_32(x) get_seed_args(x, argc, argv)
 #else /* via function or volatile */
 ee_s32 get_seed_32(int i);

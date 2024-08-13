@@ -142,7 +142,7 @@
 /*
 ** ERROR CODES
 */
-#define ERROR_MEMORY    1
+#define ERROR_MEMORY 1
 #define ERROR_MEMARRAY_FULL 2
 #define ERROR_MEMARRAY_NFOUND 3
 #define ERROR_FILECREATE 10
@@ -187,8 +187,8 @@
 ** OTHER DEFINES
 */
 #ifndef MAC
-#define TRUE    1
-#define FALSE   0
+#define TRUE 1
+#define FALSE 0
 #endif
 
 /*
@@ -240,14 +240,14 @@ typedef unsigned char faruchar;
 ** is critical.  You'll have to alter these for
 ** your specifical platform/compiler.
 */
-typedef unsigned char u8;       /* Unsigned 8-bits */
-typedef unsigned short u16;     /* Unsigned 16 bits */
+typedef unsigned char u8;   /* Unsigned 8-bits */
+typedef unsigned short u16; /* Unsigned 16 bits */
 #ifdef LONG64
-typedef unsigned int u32;       /* Unsigned 32 bits */
-typedef int n_int32;              /* Signed 32 bit integer */
+typedef unsigned int u32; /* Unsigned 32 bits */
+typedef int n_int32;      /* Signed 32 bit integer */
 #else
-typedef unsigned long u32;      /* Unsigned 32 bits */
-typedef long n_int32;              /* Signed 32 bit integer */
+typedef unsigned long u32; /* Unsigned 32 bits */
+typedef long n_int32;      /* Signed 32 bit integer */
 #endif
 
 /*****************
@@ -265,7 +265,7 @@ typedef long n_int32;              /* Signed 32 bit integer */
 ** amount of memory in the system.
 */
 /*#define NUMNUMARRAYS    1000*/
-#define NUMNUMARRAYS    10000
+#define NUMNUMARRAYS 10000
 
 /*
 ** The following constant NUMARRAYSIZE determines the
@@ -273,18 +273,18 @@ typedef long n_int32;              /* Signed 32 bit integer */
 ** this is something you shouldn't fool with, though as
 ** with most of the constants here, it is adjustable.
 */
-#define NUMARRAYSIZE    8111L
+#define NUMARRAYSIZE 8111L
 
 
 /*
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* # of seconds requested */
-        double sortspersec;     /* # of sort iterations per sec */
-        ushort numarrays;       /* # of arrays */
-        ulong arraysize;        /* # of elements in array */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* # of seconds requested */
+    double sortspersec; /* # of sort iterations per sec */
+    ushort numarrays;   /* # of arrays */
+    ulong arraysize;    /* # of elements in array */
 } SortStruct;
 
 /****************
@@ -328,11 +328,11 @@ typedef struct {
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* # of seconds requested */
-        double bitopspersec;    /* # of bitfield ops per sec */
-        ulong bitoparraysize;           /* Total # of bitfield ops */
-        ulong bitfieldarraysize;        /* Bit field array size */
+    int adjust;              /* Set adjust code */
+    ulong request_secs;      /* # of seconds requested */
+    double bitopspersec;     /* # of bitfield ops per sec */
+    ulong bitoparraysize;    /* Total # of bitfield ops */
+    ulong bitfieldarraysize; /* Bit field array size */
 } BitOpStruct;
 
 /****************************
@@ -362,11 +362,11 @@ typedef struct {
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* # of seconds requested */
-        ulong arraysize;        /* Size of array */
-        ulong loops;            /* Loops per iterations */
-        double emflops;         /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* # of seconds requested */
+    ulong arraysize;    /* Size of array */
+    ulong loops;        /* Loops per iterations */
+    double emflops;     /* Results */
 } EmFloatStruct;
 
 /*************************
@@ -377,10 +377,10 @@ typedef struct {
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* # of requested seconds */
-        ulong arraysize;        /* Size of coeff. arrays */
-        double fflops;          /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* # of requested seconds */
+    ulong arraysize;    /* Size of coeff. arrays */
+    double fflops;      /* Results */
 } FourierStruct;
 
 /*************************
@@ -391,10 +391,10 @@ typedef struct {
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* Requested # of seconds */
-        ulong numarrays;        /* # of arrays */
-        double iterspersec;     /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* Requested # of seconds */
+    ulong numarrays;    /* # of arrays */
+    double iterspersec; /* Results */
 } AssignStruct;
 
 /********************
@@ -421,11 +421,11 @@ typedef struct {
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* Requested # of seconds */
-        ulong arraysize;        /* Size of array */
-        ulong loops;            /* # of times to convert */
-        double iterspersec;     /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* Requested # of seconds */
+    ulong arraysize;    /* Size of array */
+    ulong loops;        /* # of times to convert */
+    double iterspersec; /* Results */
 } IDEAStruct;
 
 
@@ -459,11 +459,11 @@ typedef struct {
 */
 
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* Requested # of seconds */
-        ulong arraysize;        /* Size of array */
-        ulong loops;            /* # of times to compress/decompress */
-        double iterspersec;     /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* Requested # of seconds */
+    ulong arraysize;    /* Size of array */
+    ulong loops;        /* # of times to compress/decompress */
+    double iterspersec; /* Results */
 } HuffStruct;
 
 /********************************
@@ -479,16 +479,16 @@ typedef struct {
 ** has sufficient horsepower.
 */
 /*#define MAXNNETLOOPS  50000L*/
-#define MAXNNETLOOPS  500000L
+#define MAXNNETLOOPS 500000L
 
 /*
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* Requested # of seconds */
-        ulong loops;            /* # of times to learn */
-        double iterspersec;     /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* Requested # of seconds */
+    ulong loops;        /* # of times to learn */
+    double iterspersec; /* Results */
 } NNetStruct;
 
 /***********************
@@ -511,9 +511,8 @@ typedef struct {
 ** TYPEDEFS
 */
 typedef struct {
-        int adjust;             /* Set adjust code */
-        ulong request_secs;     /* Requested # of seconds */
-        ulong numarrays;        /* # of arrays */
-        double iterspersec;     /* Results */
+    int adjust;         /* Set adjust code */
+    ulong request_secs; /* Requested # of seconds */
+    ulong numarrays;    /* # of arrays */
+    double iterspersec; /* Results */
 } LUStruct;
-

@@ -7,15 +7,14 @@ ANSIbench platform-specific definitions for CoreMark
 
 /* Linux
  * - USE_CLOCK=1 causes multithreaded runs under ARM Linux to not account for
- *   all cores and thus only show single-threaded rates 
+ *   all cores and thus only show single-threaded rates
  */
-#if defined(linux) || defined (LINUX) || \
-    defined(__linux) || defined (__LINUX) || \
-    defined(__linux__) || defined (__LINUX__) || \
-    defined (__gnu_linux__) || defined (__GNU_LINUX__)
-  #ifndef USE_CLOCK
-  #define USE_CLOCK 0
-  #endif
+#if defined(linux) || defined(LINUX) || defined(__linux) ||         \
+    defined(__LINUX) || defined(__linux__) || defined(__LINUX__) || \
+    defined(__gnu_linux__) || defined(__GNU_LINUX__)
+#ifndef USE_CLOCK
+#define USE_CLOCK 0
+#endif
 #endif
 
 /* AIX

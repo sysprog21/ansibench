@@ -12,9 +12,9 @@
 /******************************************************************************/
 /*      Defines                                                               */
 /******************************************************************************/
-#define NOERROR    0      /* Self explanatory                                 */
-#define DISCRET    1      /* Error condition for out of discretization error  */
-#define NOMEM      2      /* Error for out of memory                          */
+#define NOERROR 0 /* Self explanatory                                 */
+#define DISCRET 1 /* Error condition for out of discretization error  */
+#define NOMEM 2   /* Error for out of memory                          */
 /******************************************************************************/
 /*      Type Defines                                                          */
 /******************************************************************************/
@@ -28,19 +28,19 @@
 #elif defined(DOUBLE)
 #define DSIZE double
 #define DFILE "double"
-#define DSIZEF REAL*8
+#define DSIZEF REAL * 8
 #define MPI_DSIZE MPI_DOUBLE
 
 #elif defined(FLOAT)
 #define DSIZE float
 #define DFILE "float"
-#define DSIZEF REAL*4
+#define DSIZEF REAL * 4
 #define MPI_DSIZE MPI_FLOAT
 
 #elif defined(LONG)
 #define DSIZE long
 #define DFILE "long"
-#define DSIZEF INTEGER*4
+#define DSIZEF INTEGER * 4
 
 #elif defined(INT)
 #define DSIZE int
@@ -51,17 +51,17 @@
 #elif defined(SHORT)
 #define DSIZE short
 #define DFILE "short"
-#define DSIZEF INTEGER*2
+#define DSIZEF INTEGER * 2
 
 #elif defined(CHAR)
 #define DSIZE char
 #define DFILE "char"
-#define DSIZEF INTEGER*1
+#define DSIZEF INTEGER * 1
 #endif
 
 #if defined(ILONG)
 #define ISIZE long
-#define ISIZEF INTEGER*4
+#define ISIZEF INTEGER * 4
 
 #elif defined(IINT)
 #define ISIZE int

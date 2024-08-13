@@ -37,5 +37,3 @@ long randnum(long lngval);
 n_int32 randwc(n_int32 num);
 u32 abs_randwc(u32 num);
 n_int32 randnum(n_int32 lngval);
-
-

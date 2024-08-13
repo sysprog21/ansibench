@@ -26,10 +26,10 @@
 /*
 ** Standard includes
 */
-#include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "nmglobal.h"
 
@@ -47,8 +47,8 @@
 #endif
 
 /* #include "time.h"
-#include "io.h"
 #include "fcntl.h"
+#include "io.h"
 #include "sys\stat.h" */
 /* Removed for MSVC++
 #include "alloc.h"
@@ -58,20 +58,20 @@
 ** MAC Time Manager routines (from Code Warrior)
 */
 #ifdef MACTIMEMGR
-#include <memory.h>
-#include <lowmem.h>
-#include <Types.h>
 #include <Timer.h>
+#include <Types.h>
+#include <lowmem.h>
+#include <memory.h>
 extern struct TMTask myTMTask;
-extern long MacHSTdelay,MacHSTohead;
+extern long MacHSTdelay, MacHSTohead;
 #endif
 
 /*
 ** Windows 3.1 timer defines
 */
 #ifdef WIN31TIMER
-#include <windows.h>
 #include <toolhelp.h>
+#include <windows.h>
 TIMERINFO win31tinfo;
 HANDLE hThlp;
 FARPROC lpfn;
@@ -88,73 +88,62 @@ extern int global_align;
 **   FUNCTION PROTOTYPES   **
 ****************************/
 
-farvoid *AllocateMemory(unsigned long nbytes,
-                int *errorcode);
+farvoid *AllocateMemory(unsigned long nbytes, int *errorcode);
 
-void FreeMemory(farvoid *mempointer,
-                int *errorcode);
+void FreeMemory(farvoid *mempointer, int *errorcode);
 
-void MoveMemory( farvoid *destination,
-                farvoid *source,
-                unsigned long nbytes);
+void MoveMemory(farvoid *destination, farvoid *source, unsigned long nbytes);
 
 #ifdef DOS16MEM
-void FarDOSmemmove(farvoid *destination,
-                farvoid *source,
-                unsigned long nbytes);
+void FarDOSmemmove(farvoid *destination, farvoid *source, unsigned long nbytes);
 #endif
 
 void InitMemArray(void);
 
 int AddMemArray(ulong true_addr, ulong adj_addr);
 
-int RemoveMemArray(ulong adj_addr,ulong *true_addr);
+int RemoveMemArray(ulong adj_addr, ulong *true_addr);
 
 void ReportError(char *context, int errorcode);
 
 void ErrorExit();
 
-void CreateFile(char *filename,
-                int *errorcode);
+void CreateFile(char *filename, int *errorcode);
 
 #ifdef DOS16
-int bmOpenFile(char *fname,
-                int *errorcode);
+int bmOpenFile(char *fname, int *errorcode);
 
-void CloseFile(int fhandle,
-                int *errorcode);
+void CloseFile(int fhandle, int *errorcode);
 
 void readfile(int fhandle,
-                unsigned long offset,
-                unsigned long nbytes,
-                void *buffer,
-                int *errorcode);
+              unsigned long offset,
+              unsigned long nbytes,
+              void *buffer,
+              int *errorcode);
 
 void writefile(int fhandle,
-                unsigned long offset,
-                unsigned long nbytes,
-                void *buffer,
-                int *errorcode);
+               unsigned long offset,
+               unsigned long nbytes,
+               void *buffer,
+               int *errorcode);
 #endif
 
 #ifdef LINUX
-FILE *bmOpenFile(char *fname,
-                int *errorcode);
+FILE *bmOpenFile(char *fname, int *errorcode);
 
-void CloseFile(FILE *fhandle,
-                int *errorcode);
+void CloseFile(FILE *fhandle, int *errorcode);
 
 void readfile(FILE *fhandle,
-                unsigned long offset,
-                unsigned long nbytes,
-                void *buffer,
-                int *errorcode);
+              unsigned long offset,
+              unsigned long nbytes,
+              void *buffer,
+              int *errorcode);
 
 void writefile(FILE *fhandle,
-                unsigned long offset,
-                unsigned long nbytes,
-                void *buffer,
-                int *errorcode);
+               unsigned long offset,
+               unsigned long nbytes,
+               void *buffer,
+               int *errorcode);
 
 #endif
 
@@ -165,4 +154,3 @@ unsigned long StopStopwatch(unsigned long startticks);
 unsigned long TicksToSecs(unsigned long tickamount);
 
 double TicksToFracSecs(unsigned long tickamount);
-

@@ -42,13 +42,12 @@ the switch/if behaviour, we are using a small moore machine.
         Go over the input twice, once direct, and once after introducing some
    corruption.
 */
-ee_u16
-core_bench_state(ee_u32 blksize,
-                 ee_u8 *memblock,
-                 ee_s16 seed1,
-                 ee_s16 seed2,
-                 ee_s16 step,
-                 ee_u16 crc)
+ee_u16 core_bench_state(ee_u32 blksize,
+                        ee_u8 *memblock,
+                        ee_s16 seed1,
+                        ee_s16 seed2,
+                        ee_s16 step,
+                        ee_u16 crc)
 {
     ee_u32 final_counts[NUM_CORE_STATES];
     ee_u32 track_counts[NUM_CORE_STATES];
@@ -58,13 +57,11 @@ core_bench_state(ee_u32 blksize,
 #if CORE_DEBUG
     ee_printf("State Bench: %d,%d,%d,%04x\n", seed1, seed2, step, crc);
 #endif
-    for (i = 0; i < NUM_CORE_STATES; i++)
-    {
+    for (i = 0; i < NUM_CORE_STATES; i++) {
         final_counts[i] = track_counts[i] = 0;
     }
     /* run the state machine over the input */
-    while (*p != 0)
-    {
+    while (*p != 0) {
         enum CORE_STATE fstate = core_state_transition(&p, track_counts);
         final_counts[fstate]++;
 #if CORE_DEBUG
@@ -75,16 +72,14 @@ core_bench_state(ee_u32 blksize,
     }
 #endif
     p = memblock;
-    while (p < (memblock + blksize))
-    { /* insert some corruption */
+    while (p < (memblock + blksize)) { /* insert some corruption */
         if (*p != ',')
-            *p ^= (ee_u8)seed1;
+            *p ^= (ee_u8) seed1;
         p += step;
     }
     p = memblock;
     /* run the state machine over the input again */
-    while (*p != 0)
-    {
+    while (*p != 0) {
         enum CORE_STATE fstate = core_state_transition(&p, track_counts);
         final_counts[fstate]++;
 #if CORE_DEBUG
@@ -95,15 +90,14 @@ core_bench_state(ee_u32 blksize,
     }
 #endif
     p = memblock;
-    while (p < (memblock + blksize))
-    { /* undo corruption is seed1 and seed2 are equal */
+    while (p < (memblock +
+                blksize)) { /* undo corruption is seed1 and seed2 are equal */
         if (*p != ',')
-            *p ^= (ee_u8)seed2;
+            *p ^= (ee_u8) seed2;
         p += step;
     }
     /* end timing */
-    for (i = 0; i < NUM_CORE_STATES; i++)
-    {
+    for (i = 0; i < NUM_CORE_STATES; i++) {
         crc = crcu32(final_counts[i], crc);
         crc = crcu32(track_counts[i], crc);
     }
@@ -111,20 +105,14 @@ core_bench_state(ee_u32 blksize,
 }
 
 /* Default initialization patterns */
-static ee_u8 *intpat[4]
-    = { (ee_u8 *)"5012", (ee_u8 *)"1234", (ee_u8 *)"-874", (ee_u8 *)"+122" };
-static ee_u8 *floatpat[4] = { (ee_u8 *)"35.54400",
-                              (ee_u8 *)".1234500",
-                              (ee_u8 *)"-110.700",
-                              (ee_u8 *)"+0.64400" };
-static ee_u8 *scipat[4]   = { (ee_u8 *)"5.500e+3",
-                            (ee_u8 *)"-.123e-2",
-                            (ee_u8 *)"-87e+832",
-                            (ee_u8 *)"+0.6e-12" };
-static ee_u8 *errpat[4]   = { (ee_u8 *)"T0.3e-1F",
-                            (ee_u8 *)"-T.T++Tq",
-                            (ee_u8 *)"1T3.4e4z",
-                            (ee_u8 *)"34.0e-T^" };
+static ee_u8 *intpat[4] = {(ee_u8 *) "5012", (ee_u8 *) "1234", (ee_u8 *) "-874",
+                           (ee_u8 *) "+122"};
+static ee_u8 *floatpat[4] = {(ee_u8 *) "35.54400", (ee_u8 *) ".1234500",
+                             (ee_u8 *) "-110.700", (ee_u8 *) "+0.64400"};
+static ee_u8 *scipat[4] = {(ee_u8 *) "5.500e+3", (ee_u8 *) "-.123e-2",
+                           (ee_u8 *) "-87e+832", (ee_u8 *) "+0.6e-12"};
+static ee_u8 *errpat[4] = {(ee_u8 *) "T0.3e-1F", (ee_u8 *) "-T.T++Tq",
+                           (ee_u8 *) "1T3.4e4z", (ee_u8 *) "34.0e-T^"};
 
 /* Function: core_init_state
         Initialize the input data for the state machine.
@@ -136,8 +124,7 @@ static ee_u8 *errpat[4]   = { (ee_u8 *)"T0.3e-1F",
         The seed parameter MUST be supplied from a source that cannot be
    determined at compile time
 */
-void
-core_init_state(ee_u32 size, ee_s16 seed, ee_u8 *p)
+void core_init_state(ee_u32 size, ee_s16 seed, ee_u8 *p)
 {
     ee_u32 total = 0, next = 0, i;
     ee_u8 *buf = 0;
@@ -147,45 +134,41 @@ core_init_state(ee_u32 size, ee_s16 seed, ee_u8 *p)
 #endif
     size--;
     next = 0;
-    while ((total + next + 1) < size)
-    {
-        if (next > 0)
-        {
+    while ((total + next + 1) < size) {
+        if (next > 0) {
             for (i = 0; i < next; i++)
                 *(p + total + i) = buf[i];
             *(p + total + i) = ',';
             total += next + 1;
         }
         seed++;
-        switch (seed & 0x7)
-        {
-            case 0: /* int */
-            case 1: /* int */
-            case 2: /* int */
-                buf  = intpat[(seed >> 3) & 0x3];
-                next = 4;
-                break;
-            case 3: /* float */
-            case 4: /* float */
-                buf  = floatpat[(seed >> 3) & 0x3];
-                next = 8;
-                break;
-            case 5: /* scientific */
-            case 6: /* scientific */
-                buf  = scipat[(seed >> 3) & 0x3];
-                next = 8;
-                break;
-            case 7: /* invalid */
-                buf  = errpat[(seed >> 3) & 0x3];
-                next = 8;
-                break;
-            default: /* Never happen, just to make some compilers happy */
-                break;
+        switch (seed & 0x7) {
+        case 0: /* int */
+        case 1: /* int */
+        case 2: /* int */
+            buf = intpat[(seed >> 3) & 0x3];
+            next = 4;
+            break;
+        case 3: /* float */
+        case 4: /* float */
+            buf = floatpat[(seed >> 3) & 0x3];
+            next = 8;
+            break;
+        case 5: /* scientific */
+        case 6: /* scientific */
+            buf = scipat[(seed >> 3) & 0x3];
+            next = 8;
+            break;
+        case 7: /* invalid */
+            buf = errpat[(seed >> 3) & 0x3];
+            next = 8;
+            break;
+        default: /* Never happen, just to make some compilers happy */
+            break;
         }
     }
     size++;
-    while (total < size)
-    { /* fill the rest with 0 */
+    while (total < size) { /* fill the rest with 0 */
         *(p + total) = 0;
         total++;
     }
@@ -194,8 +177,7 @@ core_init_state(ee_u32 size, ee_s16 seed, ee_u8 *p)
 #endif
 }
 
-static ee_u8
-ee_isdigit(ee_u8 c)
+static ee_u8 ee_isdigit(ee_u8 c)
 {
     ee_u8 retval;
     retval = ((c >= '0') & (c <= '9')) ? 1 : 0;
@@ -213,116 +195,88 @@ ee_isdigit(ee_u8 c)
    end state is returned (either specific format determined or invalid).
 */
 
-enum CORE_STATE
-core_state_transition(ee_u8 **instr, ee_u32 *transition_count)
+enum CORE_STATE core_state_transition(ee_u8 **instr, ee_u32 *transition_count)
 {
-    ee_u8 *         str = *instr;
-    ee_u8           NEXT_SYMBOL;
+    ee_u8 *str = *instr;
+    ee_u8 NEXT_SYMBOL;
     enum CORE_STATE state = CORE_START;
-    for (; *str && state != CORE_INVALID; str++)
-    {
+    for (; *str && state != CORE_INVALID; str++) {
         NEXT_SYMBOL = *str;
         if (NEXT_SYMBOL == ',') /* end of this input */
         {
             str++;
             break;
         }
-        switch (state)
-        {
-            case CORE_START:
-                if (ee_isdigit(NEXT_SYMBOL))
-                {
-                    state = CORE_INT;
-                }
-                else if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-')
-                {
-                    state = CORE_S1;
-                }
-                else if (NEXT_SYMBOL == '.')
-                {
-                    state = CORE_FLOAT;
-                }
-                else
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_INVALID]++;
-                }
-                transition_count[CORE_START]++;
-                break;
-            case CORE_S1:
-                if (ee_isdigit(NEXT_SYMBOL))
-                {
-                    state = CORE_INT;
-                    transition_count[CORE_S1]++;
-                }
-                else if (NEXT_SYMBOL == '.')
-                {
-                    state = CORE_FLOAT;
-                    transition_count[CORE_S1]++;
-                }
-                else
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_S1]++;
-                }
-                break;
-            case CORE_INT:
-                if (NEXT_SYMBOL == '.')
-                {
-                    state = CORE_FLOAT;
-                    transition_count[CORE_INT]++;
-                }
-                else if (!ee_isdigit(NEXT_SYMBOL))
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_INT]++;
-                }
-                break;
-            case CORE_FLOAT:
-                if (NEXT_SYMBOL == 'E' || NEXT_SYMBOL == 'e')
-                {
-                    state = CORE_S2;
-                    transition_count[CORE_FLOAT]++;
-                }
-                else if (!ee_isdigit(NEXT_SYMBOL))
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_FLOAT]++;
-                }
-                break;
-            case CORE_S2:
-                if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-')
-                {
-                    state = CORE_EXPONENT;
-                    transition_count[CORE_S2]++;
-                }
-                else
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_S2]++;
-                }
-                break;
-            case CORE_EXPONENT:
-                if (ee_isdigit(NEXT_SYMBOL))
-                {
-                    state = CORE_SCIENTIFIC;
-                    transition_count[CORE_EXPONENT]++;
-                }
-                else
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_EXPONENT]++;
-                }
-                break;
-            case CORE_SCIENTIFIC:
-                if (!ee_isdigit(NEXT_SYMBOL))
-                {
-                    state = CORE_INVALID;
-                    transition_count[CORE_INVALID]++;
-                }
-                break;
-            default:
-                break;
+        switch (state) {
+        case CORE_START:
+            if (ee_isdigit(NEXT_SYMBOL)) {
+                state = CORE_INT;
+            } else if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-') {
+                state = CORE_S1;
+            } else if (NEXT_SYMBOL == '.') {
+                state = CORE_FLOAT;
+            } else {
+                state = CORE_INVALID;
+                transition_count[CORE_INVALID]++;
+            }
+            transition_count[CORE_START]++;
+            break;
+        case CORE_S1:
+            if (ee_isdigit(NEXT_SYMBOL)) {
+                state = CORE_INT;
+                transition_count[CORE_S1]++;
+            } else if (NEXT_SYMBOL == '.') {
+                state = CORE_FLOAT;
+                transition_count[CORE_S1]++;
+            } else {
+                state = CORE_INVALID;
+                transition_count[CORE_S1]++;
+            }
+            break;
+        case CORE_INT:
+            if (NEXT_SYMBOL == '.') {
+                state = CORE_FLOAT;
+                transition_count[CORE_INT]++;
+            } else if (!ee_isdigit(NEXT_SYMBOL)) {
+                state = CORE_INVALID;
+                transition_count[CORE_INT]++;
+            }
+            break;
+        case CORE_FLOAT:
+            if (NEXT_SYMBOL == 'E' || NEXT_SYMBOL == 'e') {
+                state = CORE_S2;
+                transition_count[CORE_FLOAT]++;
+            } else if (!ee_isdigit(NEXT_SYMBOL)) {
+                state = CORE_INVALID;
+                transition_count[CORE_FLOAT]++;
+            }
+            break;
+        case CORE_S2:
+            if (NEXT_SYMBOL == '+' || NEXT_SYMBOL == '-') {
+                state = CORE_EXPONENT;
+                transition_count[CORE_S2]++;
+            } else {
+                state = CORE_INVALID;
+                transition_count[CORE_S2]++;
+            }
+            break;
+        case CORE_EXPONENT:
+            if (ee_isdigit(NEXT_SYMBOL)) {
+                state = CORE_SCIENTIFIC;
+                transition_count[CORE_EXPONENT]++;
+            } else {
+                state = CORE_INVALID;
+                transition_count[CORE_EXPONENT]++;
+            }
+            break;
+        case CORE_SCIENTIFIC:
+            if (!ee_isdigit(NEXT_SYMBOL)) {
+                state = CORE_INVALID;
+                transition_count[CORE_INVALID]++;
+            }
+            break;
+        default:
+            break;
         }
     }
     *instr = str;
