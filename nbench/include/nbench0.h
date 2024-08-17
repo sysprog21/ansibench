@@ -24,6 +24,9 @@
 ** this code.
 */
 
+#include <nmglobal.h>
+#include <stdio.h>
+
 /*
 ** Following should be modified accordingly per each
 ** compilation.

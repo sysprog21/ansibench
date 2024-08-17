@@ -23,6 +23,8 @@
 ** this code.
 */
 
+#include <nmglobal.h>
+
 /*
 ** DEFINES
 */

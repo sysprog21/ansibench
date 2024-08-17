@@ -170,12 +170,10 @@ int main(int argc, char *argv[])
     /*
     ** Handle any command-line arguments.
     */
-    if (argc > 1)
-        for (i = 1; i < argc; i++)
-            if (parse_arg(argv[i]) == -1) {
-                display_help(argv[0]);
-                exit(0);
-            }
+    if (argc != 2) {
+        display_help(argv[0]);
+        exit(-1);
+    }
 /*
 ** Output header
 */
@@ -232,7 +230,9 @@ int main(int argc, char *argv[])
         "--------------------:------------------:-------------:------------\n");
 #endif
 
-    for (i = 0; i < NUMTESTS; i++) {
+    {
+        int i = atoi(argv[1]);
+
         if (tests_to_do[i]) {
             sprintf(buffer, "%s    :", ftestnames[i]);
             output_string(buffer);
@@ -394,10 +394,17 @@ static int parse_arg(char *argptr)
 */
 void display_help(char *progname)
 {
-    printf("Usage: %s [-v] [-c<FILE>]\n", progname);
-    printf(" -v = verbose\n");
-    printf(" -c = input parameters thru command file <FILE>\n");
-    exit(0);
+    printf("Usage: %s <n=TESTBENCH>\n", progname);
+    printf("Options:\n");
+    printf("  n=TESTBENCH");
+    printf("\tThe index of the testbench which is going to be run.\n");
+    printf("\t\t0: numeric sort\n");
+    printf("\t\t1: string sort\n");
+    printf("\t\t2: bitfield\n");
+    printf("\t\t3: emfloat\n");
+    printf("\t\t5: assignment\n");
+    printf("\t\t6: IDEA\n");
+    printf("\t\t7: Huffman\n");
 }
 
 
@@ -746,6 +753,7 @@ static int bench_with_confidence(int fid,         /* Function id */
 #endif
     }
     *numtries = 5; /* Show 5 attempts */
+    return 0;
 
     /*
     ** The system allows a maximum of 30 tries before it gives

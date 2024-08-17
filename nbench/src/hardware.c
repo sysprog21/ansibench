@@ -51,7 +51,7 @@ static void runCommand(const char *command, char *result)
         /* command failed */
         result[0] = '\0';
     } else {
-        if (NULL == fgets(result, BUF_SIZ, pipe)) {
+        if (NULL == fgets(result, BUF_SIZ >> 1, pipe)) {
             /* command failed */
             result[0] = '\0';
         }
@@ -174,9 +174,9 @@ static void readProcCpuInfo(char *model, char *cache)
 void hardware(const int write_to_file, FILE *global_ofile)
 {
     char buffer[BUF_SIZ];
-    char os[BUF_SIZ];
-    char model[BUF_SIZ];
-    char cache[BUF_SIZ];
+    char os[BUF_SIZ >> 1];
+    char model[BUF_SIZ >> 1];
+    char cache[BUF_SIZ >> 1];
     char os_command[] = "uname -s -r";
 #ifdef NO_UNAME
     os[0] = '\0';

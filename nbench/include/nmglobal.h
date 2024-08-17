@@ -25,6 +25,8 @@
 ** this code.
 */
 
+#pragma once
+
 /* is this a 64 bit architecture? If so, this will define LONG64 */
 #include "pointer.h"
 

@@ -69,6 +69,8 @@ static int numsort_status = 0;
 static int stringsort_status = 0;
 #endif
 
+#define N_TIMES 100
+
 /*********************
 ** NUMERIC HEAPSORT **
 **********************
@@ -93,6 +95,7 @@ void DoNumSort(void)
     double iterations;         /* Iteration counter */
     char *errorcontext;        /* Error context string pointer */
     int systemerror;           /* For holding error codes */
+    int counter;
 
     /*
     ** Link to global structure
@@ -163,12 +166,13 @@ void DoNumSort(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         accumtime += DoNumSortIteration(arraybase, numsortstruct->arraysize,
                                         numsortstruct->numarrays);
         iterations += (double) 1.0;
-    } while (TicksToSecs(accumtime) < numsortstruct->request_secs);
+    } while (counter++ < N_TIMES * 20);
 
     /*
     ** Clean up, calculate results, and go home.  Be sure to
@@ -363,6 +367,7 @@ void DoStringSort(void)
     double iterations;         /* # of iterations */
     char *errorcontext;        /* Error context string pointer */
     int systemerror;           /* For holding error code */
+    int counter;
 
     /*
     ** Link to global structure
@@ -430,12 +435,13 @@ void DoStringSort(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         accumtime += DoStringSortIteration(arraybase, strsortstruct->numarrays,
                                            strsortstruct->arraysize);
         iterations += (double) strsortstruct->numarrays;
-    } while (TicksToSecs(accumtime) < strsortstruct->request_secs);
+    } while (counter++ < N_TIMES);
 
     /*
     ** Clean up, calculate results, and go home.
@@ -920,6 +926,7 @@ void DoBitops(void)
     char *errorcontext;          /* Error context string */
     int systemerror;             /* For holding error codes */
     int ticks;
+    int counter;
 
     /*
     ** Link to global structure.
@@ -1035,12 +1042,14 @@ void DoBitops(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
+
     do {
         accumtime +=
             DoBitfieldIteration(bitarraybase, bitoparraybase,
                                 locbitopstruct->bitoparraysize, &nbitops);
         iterations += (double) nbitops;
-    } while (TicksToSecs(accumtime) < locbitopstruct->request_secs);
+    } while (counter++ < N_TIMES * 10);
 
     /*
     ** Clean up, calculate results, and go home.
@@ -1228,6 +1237,7 @@ void DoEmFloat(void)
     char *errorcontext;              /* Error context string pointer */
     int systemerror;                 /* For holding error code */
     ulong loops;                     /* # of loops */
+    int counter;
 
     /*
     ** Link to global structure
@@ -1315,12 +1325,14 @@ void DoEmFloat(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
+
     do {
         accumtime +=
             DoEmFloatIteration(abase, bbase, cbase, locemfloatstruct->arraysize,
                                locemfloatstruct->loops);
         iterations += (double) 1.0;
-    } while (TicksToSecs(accumtime) < locemfloatstruct->request_secs);
+    } while (counter++ < N_TIMES * 10);
 
 
     /*
@@ -1366,6 +1378,7 @@ void DoFourier(void)
     double iterations;               /* # of iterations */
     char *errorcontext;              /* Error context string pointer */
     int systemerror;                 /* For error code */
+    int counter;
 
     /*
     ** Link to global structure
@@ -1439,12 +1452,14 @@ void DoFourier(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
+
     do {
         accumtime +=
             DoFPUTransIteration(abase, bbase, locfourierstruct->arraysize);
         iterations +=
             (double) locfourierstruct->arraysize * (double) 2.0 - (double) 1.0;
-    } while (TicksToSecs(accumtime) < locfourierstruct->request_secs);
+    } while (counter++ < N_TIMES);
 
 
     /*
@@ -1658,6 +1673,7 @@ void DoAssign(void)
     int systemerror;
     ulong accumtime;
     double iterations;
+    int counter;
 
     /*
     ** Link to global structure
@@ -1725,11 +1741,12 @@ void DoAssign(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         accumtime += DoAssignIteration(arraybase, locassignstruct->numarrays);
         iterations += (double) 1.0;
-    } while (TicksToSecs(accumtime) < locassignstruct->request_secs);
+    } while (counter++ < N_TIMES * 2);
 
     /*
     ** Clean up, calculate results, and go home.  Be sure to
@@ -2199,6 +2216,7 @@ void DoIDEA(void)
     faruchar *plain1; /* First plaintext buffer */
     faruchar *crypt1; /* Encryption buffer */
     faruchar *plain2; /* Second plaintext buffer */
+    int counter;
 
     /*
     ** Link to global data
@@ -2290,13 +2308,14 @@ void DoIDEA(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         accumtime +=
             DoIDEAIteration(plain1, crypt1, plain2, locideastruct->arraysize,
                             locideastruct->loops, Z, DK);
         iterations += (double) locideastruct->loops;
-    } while (TicksToSecs(accumtime) < locideastruct->request_secs);
+    } while (counter++ < N_TIMES * 5);
 
     /*
     ** Clean up, calculate results, and go home.  Be sure to
@@ -2579,6 +2598,7 @@ void DoHuffman(void)
     farchar *comparray;
     farchar *decomparray;
     farchar *plaintext;
+    int counter;
 
     /*
     ** Link to global data
@@ -2669,13 +2689,14 @@ void DoHuffman(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         accumtime += DoHuffIteration(plaintext, comparray, decomparray,
                                      lochuffstruct->arraysize,
                                      lochuffstruct->loops, hufftree);
         iterations += (double) lochuffstruct->loops;
-    } while (TicksToSecs(accumtime) < lochuffstruct->request_secs);
+    } while (counter++ < N_TIMES);
 
     /*
     ** Clean up, calculate results, and go home.  Be sure to
@@ -3077,6 +3098,7 @@ void DoNNET(void)
     char *errorcontext;
     ulong accumtime;
     double iterations;
+    int counter;
 
     /*
     ** Link to global data
@@ -3130,13 +3152,14 @@ void DoNNET(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         /* randnum(3L); */    /* Gotta do this for Neural Net */
         randnum((n_int32) 3); /* Gotta do this for Neural Net */
         accumtime += DoNNetIteration(locnnetstruct->loops);
         iterations += (double) locnnetstruct->loops;
-    } while (TicksToSecs(accumtime) < locnnetstruct->request_secs);
+    } while (counter++ < N_TIMES);
 
     /*
     ** Clean up, calculate results, and go home.  Be sure to
@@ -3854,6 +3877,7 @@ void DoLU(void)
     int i;
     ulong accumtime;
     double iterations;
+    int counter;
 
     /*
     ** Link to global data
@@ -3958,11 +3982,12 @@ void DoLU(void)
     */
     accumtime = 0L;
     iterations = (double) 0.0;
+    counter = 0;
 
     do {
         accumtime += DoLUIteration(a, b, abase, bbase, loclustruct->numarrays);
         iterations += (double) loclustruct->numarrays;
-    } while (TicksToSecs(accumtime) < loclustruct->request_secs);
+    } while (counter++ < N_TIMES);
 
     /*
     ** Clean up, calculate results, and go home.  Be sure to

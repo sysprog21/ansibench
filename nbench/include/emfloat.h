@@ -25,6 +25,7 @@
 ** this code.
 */
 
+#include <nmglobal.h>
 #include <stdio.h>
 
 /* Is this a 64 bit architecture? If so, this will define LONG64 */
