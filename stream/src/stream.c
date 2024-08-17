@@ -177,8 +177,11 @@
 #define STREAM_TYPE double
 #endif
 
-static STREAM_TYPE a[STREAM_ARRAY_SIZE + OFFSET], b[STREAM_ARRAY_SIZE + OFFSET],
-    c[STREAM_ARRAY_SIZE + OFFSET];
+#define ALIGNED_STREAM __attribute__((aligned(32)))
+
+static STREAM_TYPE a[STREAM_ARRAY_SIZE + OFFSET] ALIGNED_STREAM,
+    b[STREAM_ARRAY_SIZE + OFFSET] ALIGNED_STREAM,
+    c[STREAM_ARRAY_SIZE + OFFSET] ALIGNED_STREAM;
 
 static double avgtime[4] = {0}, maxtime[4] = {0},
               mintime[4] = {FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX};
@@ -402,7 +405,8 @@ int main()
     return 0;
 }
 
-#define M 20
+/* FIXME: fall into infinite loops when M == 20 */
+#define M 15
 
 int checktick()
 {
