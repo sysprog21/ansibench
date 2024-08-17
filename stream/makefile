@@ -11,20 +11,21 @@ n  = 10000000
 -include ../mk/$(cc)/stream/stdflags.mk
 # ----------------------------------------------------------------------------
 BINDIR ?= ./bin
-OUT     = $(BINDIR)/stream
+OUT    := $(BINDIR)/stream
 INPUT   = ./src/stream.c
 # ----------------------------------------------------------------------------
 CARGS  += -o$(OUT) $(OPTLEVEL) $(CFLAGS) $(XCFLAGS) $(INPUT) $(LDFLAGS)
 # ----------------------------------------------------------------------------
-all: bin 
+SHELL_HACK := $(shell mkdir -p $(BINDIR))
+
+$(OUT): $(wildcard src/*.c)
+	$(CC) $(CARGS)
+
 run: all
 	@date
 	@echo "Running STREAM..." 
 	@$(OUT)
-dirs:
-	@mkdir -p $(BINDIR)
-bin: dirs
-	@$(CC) $(CARGS)
+
 clean:
 	@-rm -f $(OUT) core a.out *.o
 	@-rm -f $(BINDIR)/*
