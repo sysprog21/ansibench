@@ -503,7 +503,8 @@ void checkSTREAMresults()
     } else if (sizeof(STREAM_TYPE) == 8) {
         epsilon = 1.e-13;
     } else {
-        printf("WEIRD: sizeof(STREAM_TYPE) = %lu\n", sizeof(STREAM_TYPE));
+        printf("WEIRD: sizeof(STREAM_TYPE) = %d\n",
+               (unsigned int) sizeof(STREAM_TYPE));
         epsilon = 1.e-6;
     }
 

@@ -180,7 +180,7 @@ void hardware(const int write_to_file, FILE *global_ofile)
     char os_command[] = "uname -s -r";
 #ifdef NO_UNAME
     os[0] = '\0';
-#else
+#elif !defined(__riscv)
     runCommand(os_command, os);
 #endif
     if (NULL != strstr(os, "Linux")) {
